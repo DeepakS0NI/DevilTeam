@@ -1,0 +1,1167 @@
+[
+  {
+    "_id": "H001",
+    "name": "SGPGI Emergency & Trauma Centre",
+    "area": "Raebareli Rd",
+    "city": "Lucknow",
+    "phone": "0522-3753941",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.9383,
+        26.7445
+      ]
+    },
+    "tier": "low",
+    "cost": "₹ Subsidised govt rates",
+    "rating": 3.9,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "gastroenterology",
+      "general_surgery",
+      "nephrology",
+      "neurology",
+      "neurosurgery",
+      "pulmonology",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "cardiology",
+        "doctor": "Dr. Verma"
+      },
+      {
+        "specialty": "nephrology",
+        "doctor": "Dr. Awasthi"
+      },
+      {
+        "specialty": "neurosurgery",
+        "doctor": "Dr. Yadav"
+      },
+      {
+        "specialty": "pulmonology",
+        "doctor": "Dr. Rawat"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "cath_lab",
+      "ct_scan",
+      "dialysis",
+      "mri",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 22,
+      "icu_available": 18,
+      "ventilators_available": 1,
+      "ot_total": 5,
+      "ot_available": 1,
+      "general_beds_available": 40
+    },
+    "ambulance": {
+      "available": 4,
+      "als": true
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801005+00:00"
+  },
+  {
+    "_id": "H002",
+    "name": "KGMU Trauma Centre",
+    "area": "Chowk",
+    "city": "Lucknow",
+    "phone": "0522-4349889",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.917,
+        26.869
+      ]
+    },
+    "tier": "low",
+    "cost": "₹ Subsidised govt rates",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "burns",
+      "general_medicine",
+      "general_surgery",
+      "neurology",
+      "neurosurgery",
+      "orthopedics",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "burns",
+        "doctor": "Dr. Srivastava"
+      },
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Singh"
+      },
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Khan"
+      },
+      {
+        "specialty": "neurosurgery",
+        "doctor": "Dr. Saxena"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ct_scan",
+      "mri",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 30,
+      "icu_available": 3,
+      "ventilators_available": 8,
+      "ot_total": 9,
+      "ot_available": 1,
+      "general_beds_available": 36
+    },
+    "ambulance": {
+      "available": 0,
+      "als": true
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801053+00:00"
+  },
+  {
+    "_id": "H003",
+    "name": "RMLIMS Emergency",
+    "area": "Vibhuti Khand",
+    "city": "Lucknow",
+    "phone": "0522-2753996",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.0,
+        26.8627
+      ]
+    },
+    "tier": "low",
+    "cost": "₹ Subsidised govt rates",
+    "rating": 4.5,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_medicine",
+      "general_surgery",
+      "obstetrics",
+      "pediatrics",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Tiwari"
+      },
+      {
+        "specialty": "obstetrics",
+        "doctor": "Dr. Verma"
+      },
+      {
+        "specialty": "pediatrics",
+        "doctor": "Dr. Mishra"
+      },
+      {
+        "specialty": "trauma",
+        "doctor": "Dr. Bajpai"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ct_scan",
+      "nicu",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 27,
+      "icu_available": 15,
+      "ventilators_available": 5,
+      "ot_total": 9,
+      "ot_available": 7,
+      "general_beds_available": 18
+    },
+    "ambulance": {
+      "available": 4,
+      "als": true
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801066+00:00"
+  },
+  {
+    "_id": "H004",
+    "name": "Sahara Hospital",
+    "area": "Gomti Nagar",
+    "city": "Lucknow",
+    "phone": "0522-2325563",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.0005,
+        26.858
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "general_medicine",
+      "obstetrics",
+      "orthopedics",
+      "pediatrics"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Pandey"
+      },
+      {
+        "specialty": "obstetrics",
+        "doctor": "Dr. Pandey"
+      },
+      {
+        "specialty": "orthopedics",
+        "doctor": "Dr. Saxena"
+      },
+      {
+        "specialty": "pediatrics",
+        "doctor": "Dr. Shukla"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "cath_lab",
+      "ct_scan",
+      "nicu",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 15,
+      "icu_available": 14,
+      "ventilators_available": 1,
+      "ot_total": 9,
+      "ot_available": 1,
+      "general_beds_available": 60
+    },
+    "ambulance": {
+      "available": 2,
+      "als": true
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801080+00:00"
+  },
+  {
+    "_id": "H005",
+    "name": "Medanta Hospital",
+    "area": "Sushant Golf City",
+    "city": "Lucknow",
+    "phone": "0522-3936490",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.986,
+        26.764
+      ]
+    },
+    "tier": "high",
+    "cost": "₹₹₹ Premium super-speciality",
+    "rating": 4.2,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "nephrology",
+      "neurology",
+      "neurosurgery",
+      "oncology",
+      "orthopedics",
+      "pulmonology"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "cardiology",
+        "doctor": "Dr. Singh"
+      },
+      {
+        "specialty": "nephrology",
+        "doctor": "Dr. Shukla"
+      },
+      {
+        "specialty": "neurology",
+        "doctor": "Dr. Rawat"
+      },
+      {
+        "specialty": "neurosurgery",
+        "doctor": "Dr. Khan"
+      },
+      {
+        "specialty": "oncology",
+        "doctor": "Dr. Mishra"
+      },
+      {
+        "specialty": "pulmonology",
+        "doctor": "Dr. Kapoor"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "cath_lab",
+      "ct_scan",
+      "dialysis",
+      "mri",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 13,
+      "icu_available": 11,
+      "ventilators_available": 3,
+      "ot_total": 7,
+      "ot_available": 6,
+      "general_beds_available": 25
+    },
+    "ambulance": {
+      "available": 3,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801090+00:00"
+  },
+  {
+    "_id": "H006",
+    "name": "Apollomedics Super Speciality",
+    "area": "Kanpur Rd",
+    "city": "Lucknow",
+    "phone": "0522-3595686",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.887,
+        26.796
+      ]
+    },
+    "tier": "high",
+    "cost": "₹₹₹ Premium super-speciality",
+    "rating": 4.8,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "gastroenterology",
+      "general_medicine",
+      "orthopedics",
+      "pulmonology",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "cardiology",
+        "doctor": "Dr. Kapoor"
+      },
+      {
+        "specialty": "gastroenterology",
+        "doctor": "Dr. Verma"
+      },
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Srivastava"
+      },
+      {
+        "specialty": "orthopedics",
+        "doctor": "Dr. Kapoor"
+      },
+      {
+        "specialty": "pulmonology",
+        "doctor": "Dr. Tiwari"
+      },
+      {
+        "specialty": "trauma",
+        "doctor": "Dr. Tiwari"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "cath_lab",
+      "ct_scan",
+      "mri",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 29,
+      "icu_available": 0,
+      "ventilators_available": 7,
+      "ot_total": 7,
+      "ot_available": 2,
+      "general_beds_available": 16
+    },
+    "ambulance": {
+      "available": 2,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801106+00:00"
+  },
+  {
+    "_id": "H007",
+    "name": "Gomti Heart & Vascular",
+    "area": "Gomti Nagar Ext.",
+    "city": "Lucknow",
+    "phone": "0522-4162127",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.026,
+        26.839
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.8,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "general_medicine"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "cardiology",
+        "doctor": "Dr. Rawat"
+      },
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Rizvi"
+      }
+    ],
+    "equipment": [
+      "cath_lab",
+      "ct_scan",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 5,
+      "icu_available": 5,
+      "ventilators_available": 8,
+      "ot_total": 2,
+      "ot_available": 1,
+      "general_beds_available": 12
+    },
+    "ambulance": {
+      "available": 1,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801116+00:00"
+  },
+  {
+    "_id": "H008",
+    "name": "Awadh Ortho & Trauma",
+    "area": "Alambagh",
+    "city": "Lucknow",
+    "phone": "0522-2680748",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.905,
+        26.815
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 3.9,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_surgery",
+      "orthopedics",
+      "trauma"
+    ],
+    "specialists_on_duty": [],
+    "equipment": [
+      "blood_bank",
+      "ct_scan",
+      "mri",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 7,
+      "icu_available": 0,
+      "ventilators_available": 0,
+      "ot_total": 3,
+      "ot_available": 0,
+      "general_beds_available": 0
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801131+00:00"
+  },
+  {
+    "_id": "H009",
+    "name": "NovaNeuro Sciences",
+    "area": "Aliganj",
+    "city": "Lucknow",
+    "phone": "0522-3578020",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.945,
+        26.896
+      ]
+    },
+    "tier": "high",
+    "cost": "₹₹₹ Premium super-speciality",
+    "rating": 3.9,
+    "emergency_24x7": true,
+    "specialties": [
+      "neurology",
+      "neurosurgery"
+    ],
+    "specialists_on_duty": [],
+    "equipment": [
+      "ct_scan",
+      "mri",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 5,
+      "icu_available": 2,
+      "ventilators_available": 5,
+      "ot_total": 0,
+      "ot_available": 0,
+      "general_beds_available": 11
+    },
+    "ambulance": {
+      "available": 1,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801140+00:00"
+  },
+  {
+    "_id": "H010",
+    "name": "Shakti Women & Child",
+    "area": "Indira Nagar",
+    "city": "Lucknow",
+    "phone": "0522-2604472",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.995,
+        26.88
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 3.9,
+    "emergency_24x7": true,
+    "specialties": [
+      "obstetrics",
+      "pediatrics"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "obstetrics",
+        "doctor": "Dr. Pandey"
+      },
+      {
+        "specialty": "pediatrics",
+        "doctor": "Dr. Agarwal"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "nicu",
+      "ultrasound"
+    ],
+    "capacity": {
+      "icu_total": 7,
+      "icu_available": 7,
+      "ventilators_available": 0,
+      "ot_total": 3,
+      "ot_available": 1,
+      "general_beds_available": 0
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801149+00:00"
+  },
+  {
+    "_id": "H011",
+    "name": "Sunrise Children's Hospital",
+    "area": "Mahanagar",
+    "city": "Lucknow",
+    "phone": "0522-2113424",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.958,
+        26.877
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_medicine",
+      "pediatrics"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Mishra"
+      }
+    ],
+    "equipment": [
+      "nicu",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 8,
+      "icu_available": 1,
+      "ventilators_available": 4,
+      "ot_total": 2,
+      "ot_available": 2,
+      "general_beds_available": 11
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801159+00:00"
+  },
+  {
+    "_id": "H012",
+    "name": "Unity Burns Centre",
+    "area": "Charbagh",
+    "city": "Lucknow",
+    "phone": "0522-2818501",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.922,
+        26.832
+      ]
+    },
+    "tier": "low",
+    "cost": "₹ Subsidised govt rates",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "burns",
+      "general_surgery"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "burns",
+        "doctor": "Dr. Dixit"
+      },
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Tiwari"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 3,
+      "icu_available": 1,
+      "ventilators_available": 8,
+      "ot_total": 2,
+      "ot_available": 1,
+      "general_beds_available": 11
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801170+00:00"
+  },
+  {
+    "_id": "H013",
+    "name": "Kaveri Kidney Care",
+    "area": "Hazratganj",
+    "city": "Lucknow",
+    "phone": "0522-2812205",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.948,
+        26.852
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.5,
+    "emergency_24x7": true,
+    "specialties": [
+      "nephrology"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "nephrology",
+        "doctor": "Dr. Saxena"
+      }
+    ],
+    "equipment": [
+      "dialysis",
+      "ultrasound",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 0,
+      "icu_available": 0,
+      "ventilators_available": 0,
+      "ot_total": 2,
+      "ot_available": 1,
+      "general_beds_available": 11
+    },
+    "ambulance": {
+      "available": 1,
+      "als": false
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801178+00:00"
+  },
+  {
+    "_id": "H014",
+    "name": "Lotus Emergency & Trauma",
+    "area": "Hazratganj",
+    "city": "Lucknow",
+    "phone": "0522-4559624",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.94,
+        26.847
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_medicine",
+      "general_surgery",
+      "orthopedics",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Shukla"
+      },
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Saxena"
+      },
+      {
+        "specialty": "orthopedics",
+        "doctor": "Dr. Verma"
+      },
+      {
+        "specialty": "trauma",
+        "doctor": "Dr. Singh"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ct_scan",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 1,
+      "icu_available": 1,
+      "ventilators_available": 3,
+      "ot_total": 1,
+      "ot_available": 1,
+      "general_beds_available": 5
+    },
+    "ambulance": {
+      "available": 1,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801189+00:00"
+  },
+  {
+    "_id": "H015",
+    "name": "Civil District Hospital",
+    "area": "Hazratganj",
+    "city": "Lucknow",
+    "phone": "0522-2356177",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.942,
+        26.856
+      ]
+    },
+    "tier": "low",
+    "cost": "₹ Subsidised govt rates",
+    "rating": 4.5,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_medicine",
+      "general_surgery",
+      "obstetrics",
+      "pediatrics"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Srivastava"
+      },
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Kapoor"
+      },
+      {
+        "specialty": "obstetrics",
+        "doctor": "Dr. Mehra"
+      },
+      {
+        "specialty": "pediatrics",
+        "doctor": "Dr. Kapoor"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ultrasound",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 5,
+      "icu_available": 4,
+      "ventilators_available": 0,
+      "ot_total": 0,
+      "ot_available": 0,
+      "general_beds_available": 14
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801199+00:00"
+  },
+  {
+    "_id": "H016",
+    "name": "Pulse Chest & Lung Institute",
+    "area": "Aliganj",
+    "city": "Lucknow",
+    "phone": "0522-4301247",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.936,
+        26.889
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.3,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_medicine",
+      "pulmonology"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Mehra"
+      },
+      {
+        "specialty": "pulmonology",
+        "doctor": "Dr. Mehra"
+      }
+    ],
+    "equipment": [
+      "ct_scan",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 9,
+      "icu_available": 1,
+      "ventilators_available": 8,
+      "ot_total": 3,
+      "ot_available": 1,
+      "general_beds_available": 13
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801207+00:00"
+  },
+  {
+    "_id": "H017",
+    "name": "Harmony Cancer Institute",
+    "area": "Faizabad Rd",
+    "city": "Lucknow",
+    "phone": "0522-3008895",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.02,
+        26.875
+      ]
+    },
+    "tier": "high",
+    "cost": "₹₹₹ Premium super-speciality",
+    "rating": 4.6,
+    "emergency_24x7": true,
+    "specialties": [
+      "general_surgery",
+      "oncology"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Pandey"
+      },
+      {
+        "specialty": "oncology",
+        "doctor": "Dr. Agarwal"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "ct_scan",
+      "mri",
+      "ultrasound"
+    ],
+    "capacity": {
+      "icu_total": 3,
+      "icu_available": 3,
+      "ventilators_available": 0,
+      "ot_total": 0,
+      "ot_available": 0,
+      "general_beds_available": 4
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801214+00:00"
+  },
+  {
+    "_id": "H018",
+    "name": "CityCare Multispeciality",
+    "area": "Indira Nagar",
+    "city": "Lucknow",
+    "phone": "0522-2636847",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.005,
+        26.883
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.3,
+    "emergency_24x7": true,
+    "specialties": [
+      "cardiology",
+      "gastroenterology",
+      "general_medicine",
+      "neurology",
+      "orthopedics",
+      "trauma"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "cardiology",
+        "doctor": "Dr. Mehra"
+      },
+      {
+        "specialty": "general_medicine",
+        "doctor": "Dr. Rizvi"
+      },
+      {
+        "specialty": "neurology",
+        "doctor": "Dr. Srivastava"
+      },
+      {
+        "specialty": "orthopedics",
+        "doctor": "Dr. Mehra"
+      },
+      {
+        "specialty": "trauma",
+        "doctor": "Dr. Kapoor"
+      }
+    ],
+    "equipment": [
+      "blood_bank",
+      "cath_lab",
+      "ct_scan",
+      "mri",
+      "ultrasound",
+      "ventilator",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 23,
+      "icu_available": 5,
+      "ventilators_available": 2,
+      "ot_total": 10,
+      "ot_available": 7,
+      "general_beds_available": 39
+    },
+    "ambulance": {
+      "available": 0,
+      "als": true
+    },
+    "accepts_ayushman_bharat": false,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801225+00:00"
+  },
+  {
+    "_id": "H019",
+    "name": "Metro Gastro Clinic",
+    "area": "Alambagh",
+    "city": "Lucknow",
+    "phone": "0522-4350052",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        80.898,
+        26.809
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 3.9,
+    "emergency_24x7": true,
+    "specialties": [
+      "gastroenterology",
+      "general_medicine"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "gastroenterology",
+        "doctor": "Dr. Khan"
+      }
+    ],
+    "equipment": [
+      "ultrasound",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 8,
+      "icu_available": 4,
+      "ventilators_available": 0,
+      "ot_total": 3,
+      "ot_available": 0,
+      "general_beds_available": 3
+    },
+    "ambulance": {
+      "available": 1,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801232+00:00"
+  },
+  {
+    "_id": "H020",
+    "name": "Orchid Day Care",
+    "area": "Gomti Nagar",
+    "city": "Lucknow",
+    "phone": "0522-4120443",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        81.01,
+        26.86
+      ]
+    },
+    "tier": "medium",
+    "cost": "₹₹ Private, mid-range",
+    "rating": 4.4,
+    "emergency_24x7": false,
+    "specialties": [
+      "general_surgery"
+    ],
+    "specialists_on_duty": [
+      {
+        "specialty": "general_surgery",
+        "doctor": "Dr. Khan"
+      }
+    ],
+    "equipment": [
+      "ultrasound",
+      "x_ray"
+    ],
+    "capacity": {
+      "icu_total": 1,
+      "icu_available": 1,
+      "ventilators_available": 0,
+      "ot_total": 3,
+      "ot_available": 3,
+      "general_beds_available": 15
+    },
+    "ambulance": {
+      "available": 0,
+      "als": false
+    },
+    "accepts_ayushman_bharat": true,
+    "synthetic": true,
+    "updated_at": "2026-09-26T06:12:33.801238+00:00"
+  }
+]

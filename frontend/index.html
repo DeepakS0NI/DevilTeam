@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CareShift AI — Emergency Hospital Network, Lucknow</title>
+<title>CareFirst AI — Emergency Hospital Network, Lucknow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -170,6 +170,20 @@
   .evidence div{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 10px;
     background:var(--surface);border-radius:8px;border:1px solid var(--line);}
   .evidence div span:last-child{font-family:"IBM Plex Mono";color:var(--teal-dark);}
+  .trace-panel{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);}
+  .trace-panel summary{padding:13px 15px;cursor:pointer;font-size:13px;font-weight:600;color:var(--teal-dark);}
+  .trace-body{padding:0 15px 15px;display:grid;gap:12px;}
+  .trace-section{border-top:1px solid var(--line);padding-top:11px;min-width:0;}
+  .trace-section h4{font-size:12px;margin:0 0 7px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .trace-section p{font-size:12.5px;line-height:1.5;margin:0;overflow-wrap:anywhere;}
+  .trace-code{display:block;max-height:260px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;
+    font:11.5px/1.5 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink);}
+  .trace-scores{display:grid;gap:6px;}
+  .trace-score{display:grid;grid-template-columns:minmax(100px,1.2fr) repeat(3,1fr);gap:8px;
+    font-size:11.5px;padding:7px 9px;background:var(--bg);border-radius:7px;}
+  .trace-score span:not(:first-child){font-family:"IBM Plex Mono";text-align:right;}
+  @media(max-width:560px){.trace-score{grid-template-columns:1fr 1fr;}.trace-score span:first-child{grid-column:1/-1;}}
 
   .results{margin-top:26px;display:none;}
   .results.show{display:block;}
@@ -306,8 +320,8 @@
 <header>
   <div class="wrap headrow">
     <a class="brand" href="#top">
-      <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18" stroke-linecap="round" stroke-width="2.5"/></svg></div>
-      <div><h1>CareShift AI</h1><span>Find care. Get there.</span></div>
+      <!-- <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18" stroke-linecap="round" stroke-width="2.5"/></svg></div> -->
+      <div><h1 style="font-family: 'Syne',sans-serif;">Care<b style="color:#23a8a6;">First AI</b></h1><span>Find care. Get there.</span></div>
     </a>
     <nav>
       <a href="#tool">Find a hospital</a>
@@ -337,7 +351,7 @@
       <div class="hero-copy">
         <div class="eyebrow">Emergency match, in seconds</div>
         <h2>Tell us what's wrong. We'll find who can treat it.</h2>
-        <p>CareShift AI matches your emergency to the nearest ready hospital — with the evidence behind every suggestion — and arranges an ambulance if you can't get there yourself.</p>
+        <p>CareFirst AI matches your emergency to the nearest ready hospital — with the evidence behind every suggestion — and arranges an ambulance if you can't get there yourself.</p>
         <div class="hero-badges">
           <span class="hb">Synthetic demo data</span>
           <span class="hb">Human approval required</span>
@@ -358,7 +372,7 @@
       <div class="stat"><b>108</b><span>integrated ambulance line</span></div>
     </div>
   </div>
-</div>
+</div><br><br><br>
 
 <div class="wrap" id="top">
   <section class="tool-section" id="tool">
@@ -404,8 +418,8 @@
 
       <details class="api-panel">
         <summary>⚙ Connect a live API (optional)</summary>
-        <p>Paste your backend's match endpoint (e.g. an ASP.NET Core route like <span class="mono">https://yourapi.com/api/hospitals/match</span>). This only works once this page is hosted on your own server — Claude's preview sandbox blocks calls to outside APIs, so here it will safely fall back to the built-in demo dataset.</p>
-        <input type="text" id="apiEndpoint" placeholder="https://your-api.com/api/hospitals/match">
+        <p>Base URL of the CareFirst FastAPI backend (Gemini + SQL), e.g. <span class="mono">http://localhost:8000</span> or your deployed URL. Best matches come from this API; when it is unavailable, the page shows an error instead of simulated matches.</p>
+        <input type="text" id="apiEndpoint" placeholder="http://localhost:8000">
         <button type="button" class="btn" onclick="saveApiEndpoint()">Save endpoint</button>
         <span class="api-status" id="apiStatus">Using built-in demo dataset</span>
       </details>
@@ -416,10 +430,14 @@
       </div>
 
       <div class="copilot" id="copilot">
-        <div class="copilot-head"><div class="av">AI</div><b>CareShift Copilot</b></div>
+        <div class="copilot-head"><div class="av">AI</div><b>CareFirst Copilot</b></div>
         <p id="copilotText"></p>
         <div class="evidence" id="evidence"></div>
       </div>
+      <details class="trace-panel" id="tracePanel">
+        <summary>Inspect query, agent outputs, SQL, and ranking</summary>
+        <div class="trace-body" id="traceBody"></div>
+      </details>
     </div>
 
     <div class="results" id="results">
@@ -440,24 +458,24 @@
   </section>
 
   <section id="how">
-    <div class="sec-head"><div><div class="eyebrow">How it works</div><h2>From symptom to treatment, in three steps</h2><p>No forms, no phone trees. CareShift AI does the matching so you can focus on getting help.</p></div></div>
+    <div class="sec-head"><div><div class="eyebrow">How it works</div><h2>From symptom to treatment, in three steps</h2><p>No forms, no phone trees. CareFirst AI does the matching so you can focus on getting help.</p></div></div>
     <div class="steps3">
       <div class="step-card"><div class="step-num">01</div><h4>Describe what's happening</h4><p>Type the symptom in your own words, or pick a common emergency. No medical jargon needed.</p></div>
-      <div class="step-card"><div class="step-num">02</div><h4>See ranked, compared hospitals</h4><p>CareShift AI compares nearby hospitals on specialty fit, ICU beds, OT and specialist availability — reasoning shown, not hidden.</p></div>
+      <div class="step-card"><div class="step-num">02</div><h4>See ranked, compared hospitals</h4><p>CareFirst AI compares nearby hospitals on specialty fit, ICU beds, OT and specialist availability — reasoning shown, not hidden.</p></div>
       <div class="step-card"><div class="step-num">03</div><h4>Get there, or let us send help</h4><p>Call the hospital directly, or request an ambulance — live dispatch status and route shown until arrival.</p></div>
     </div>
   </section>
 
   <section id="network">
-    <div class="sec-head"><div><div class="eyebrow">Our network</div><h2>Partner hospitals across Lucknow</h2><p>Every hospital in the CareShift network is verified for emergency capacity before it's added.</p></div></div>
+    <div class="sec-head"><div><div class="eyebrow">Our network</div><h2>Partner hospitals across Lucknow</h2><p>Every hospital in the CareFirst network is verified for emergency capacity before it's added.</p></div></div>
     <div class="net-list" id="netGrid"></div>
   </section>
 
   <section id="trust">
-    <div class="sec-head"><div><div class="eyebrow">Trust & safety</div><h2>Built with clinicians, not around them</h2><p>CareShift AI suggests — it never decides. A human always makes the final call, and every figure here is synthetic demo data.</p></div></div>
+    <div class="sec-head"><div><div class="eyebrow">Trust & safety</div><h2>Built with clinicians, not around them</h2><p>CareFirst AI suggests — it never decides. A human always makes the final call, and every figure here is synthetic demo data.</p></div></div>
     <div class="trust-grid">
       <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><h4>Verified network</h4><p>Every partner hospital's emergency capacity is confirmed and re-checked regularly.</p></div>
-      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/></svg></div><h4>Human-in-the-loop</h4><p>Clinicians review every match. CareShift AI never makes an autonomous treatment decision.</p></div>
+      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/></svg></div><h4>Human-in-the-loop</h4><p>Clinicians review every match. CareFirst AI never makes an autonomous treatment decision.</p></div>
       <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/></svg></div><h4>Evidence shown</h4><p>Every suggestion comes with the reasoning behind it — distance, specialty fit, OT and bed status.</p></div>
       <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h4>Privacy first</h4><p>Your details are used only to route your request and are never sold or advertised against.</p></div>
     </div>
@@ -466,18 +484,18 @@
   <section id="reviews">
     <div class="sec-head"><div><div class="eyebrow">Reviews</div><h2>What families have said</h2></div></div>
     <div class="rev-grid">
-      <div class="rev-card"><span class="quote-mark">"</span><p class="quote">We didn't know which hospital had a stroke unit free at 2am. CareShift pointed us to the right one in under a minute.</p><div class="rev-who"><b>Anita R.</b> · Gomti Nagar</div></div>
+      <div class="rev-card"><span class="quote-mark">"</span><p class="quote">We didn't know which hospital had a stroke unit free at 2am. CareFirst pointed us to the right one in under a minute.</p><div class="rev-who"><b>Anita R.</b> · Gomti Nagar</div></div>
       <div class="rev-card"><span class="quote-mark">"</span><p class="quote">Our car wouldn't start during a cardiac emergency. The ambulance request kept us updated the whole way — it stayed calm when we couldn't.</p><div class="rev-who"><b>Suresh P.</b> · Alambagh</div></div>
       <div class="rev-card"><span class="quote-mark">"</span><p class="quote">Simple to use even when panicking. Would like more hospitals added outside Lucknow city.</p><div class="rev-who"><b>Fatima K.</b> · Aliganj</div></div>
     </div>
   </section>
 
   <section id="about">
-    <div class="sec-head"><div><div class="eyebrow">About CareShift AI</div><h2>Why we built this</h2></div></div>
+    <div class="sec-head"><div><div class="eyebrow">About CareFirst AI</div><h2>Why we built this</h2></div></div>
     <div class="about-wrap">
       <div class="about-copy">
         <p>Emergency teams and families face the same problem from different sides: information about who can treat what, and where beds and OTs are free, is scattered across sheets, dashboards and phone calls — precisely when there's no time to search.</p>
-        <p>CareShift AI started as a hackathon project (PS-01) focused on hospital monitoring search, and grew into a patient-facing tool with the same principle: turn a plain description of an emergency into a safe, evidence-backed match — fast enough to matter.</p>
+        <p>CareFirst AI started as a hackathon project (PS-01) focused on hospital monitoring search, and grew into a patient-facing tool with the same principle: turn a plain description of an emergency into a safe, evidence-backed match — fast enough to matter.</p>
       </div>
       <div class="about-list">
         <div class="about-list-item"><div class="n">01</div><div><p>Built with real hospital operations patterns</p><span>Grounded in actual capacity and specialty structure, on synthetic demo records.</span></div></div>
@@ -491,13 +509,13 @@
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <div><h5>CareShift AI</h5><p style="color:var(--muted)">Emergency hospital matching and transport for Lucknow, built on the CareShift AI (PS-01) hospital-operations platform.</p></div>
+      <div><h5>CareFirst AI</h5><p style="color:var(--muted)">Emergency hospital matching and transport for Lucknow, built on the CareFirst AI (PS-01) hospital-operations platform.</p></div>
       <div><h5>Product</h5><a href="#tool">Find a hospital</a><a href="#how">How it works</a><a href="#network">Our network</a></div>
       <div><h5>Company</h5><a href="#about">About</a><a href="#reviews">Reviews</a><a href="#">For hospitals</a></div>
       <div><h5>Emergency numbers</h5><p><b class="mono">108</b> — Ambulance</p><p><b class="mono">100</b> — Police</p><p><b class="mono">101</b> — Fire</p></div>
     </div>
-    <div class="foot-api">Backend-ready: this UI calls fetchHospitalMatches() / requestAmbulanceDispatch() — swap the mock bodies for ASP.NET Core Web API endpoints (/api/hospitals/match, /api/transport/request) without touching this markup.</div>
-    <div class="foot-bottom"><span>© 2026 CareShift AI · PS-01 · Lucknow, India</span><span>Demo prototype — in a real emergency, always call 108 directly.</span></div>
+    <div class="foot-api">Powered by FastAPI + Gemini + SQL database — POST /api/search (text → AI filter → live hospital data).</div>
+    <div class="foot-bottom"><span>© 2026 CareFirst AI · PS-01 · Lucknow, India</span><span>Demo prototype — in a real emergency, always call 108 directly.</span></div>
   </div>
 </footer>
 
@@ -512,22 +530,30 @@
 </div>
 
 <script>
-/* ---- Mock data layer (kept separate so it can be swapped for real API calls) ---- */
-/* Natural-language department detection via regex — word-boundary patterns so
-   "heartburn" doesn't false-match "heart", etc. Real deployments would replace
-   detectDept() with a call to an actual NLP/LLM endpoint; this regex layer is
-   the fully-working, no-backend-needed version for the demo. */
+/* =====================================================================
+   🔗 BACKEND CONNECTION
+   Apne FastAPI backend ka URL yahan daalo.
+   - Local:  http://localhost:8000
+   - Deploy: https://CareFirst-api.onrender.com   (jo bhi tumhara URL ho)
+   UI ke "Connect a live API" panel se bhi badal sakte ho (browser mein save ho jata hai).
+   ===================================================================== */
+const DEFAULT_API_BASE = "http://localhost:8000";
+
+let API_BASE = DEFAULT_API_BASE;
+try { API_BASE = localStorage.getItem('CareFirst_api') || DEFAULT_API_BASE; } catch(e) {}
+
+const TIER_LABEL = {low:"Low cost · govt", medium:"Medium · private", high:"High · premium"};
+
+/* ---------- Offline demo fallback (only used if backend is unreachable) ---------- */
 const DEPTS = {
-  cardiac: {label:"Cardiology / Cardiac emergency", pattern:/\b(chest\s*pain|heart\s*attack|cardiac|palpitations?|high\s*bp|blood\s*pressure|angina)\b/i},
-  trauma: {label:"Trauma & orthopaedics", pattern:/\b(accident|fracture[d]?|bleed(ing)?|injur(y|ed)|fell|fall(en)?|burns?|road\s*accident|trauma)\b/i},
-  neuro: {label:"Neurology / Stroke unit", pattern:/\b(stroke|paraly(sis|zed)|seizures?|unconscious|fits?|numbness|slurred\s*speech)\b/i},
-  respiratory: {label:"Pulmonology / ICU", pattern:/\b(breathless(ness)?|can'?t\s*breathe|asthma|oxygen|choking|lungs?)\b/i},
+  cardiac: {label:"Cardiology", pattern:/\b(chest\s*pain|heart\s*attack|cardiac|palpitations?|seene|angina)\b/i},
+  trauma: {label:"Trauma & Orthopaedics", pattern:/\b(accident|fracture[d]?|bones?|bons|haddi|bleed(ing)?|injur(y|ed)|fell|fall(en)?|trauma)\b/i},
+  neuro: {label:"Neurology / Stroke", pattern:/\b(stroke|paraly(sis|zed)|seizures?|unconscious|behosh|fits?|slurred\s*speech)\b/i},
+  respiratory: {label:"Pulmonology", pattern:/\b(breathless(ness)?|can'?t\s*breathe|saans|asthma|oxygen|choking)\b/i},
   maternity: {label:"Obstetrics / Maternity", pattern:/\b(pregnan(t|cy)|labou?r|deliver(y|ing)|contractions?)\b/i},
   general: {label:"General emergency", pattern:null}
 };
-
-const TIER_LABEL = {low:"Low cost · govt", medium:"Medium · private", high:"High · premium"};
-const HOSPITALS = [
+const DEMO_HOSPITALS = [
   {name:"SGPGI Emergency & Trauma Centre", area:"Raebareli Rd", specialties:["cardiac","neuro","trauma","respiratory"], icu:6, ot:2, specialist:"Dr. Mehra (Cardio)", dist:6.4, eta:14, rating:4.6, tier:"low", cost:"₹ Subsidised govt rates"},
   {name:"KGMU Trauma Centre", area:"Chowk", specialties:["trauma","neuro","general"], icu:3, ot:1, specialist:"Dr. Rawat (Neuro)", dist:5.1, eta:12, rating:4.3, tier:"low", cost:"₹ Subsidised govt rates"},
   {name:"RMLIMS Emergency", area:"Vibhuti Khand", specialties:["general","maternity","trauma"], icu:4, ot:1, specialist:"Dr. Verma (General)", dist:4.0, eta:10, rating:4.1, tier:"low", cost:"₹ Subsidised govt rates"},
@@ -536,145 +562,188 @@ const HOSPITALS = [
   {name:"Apollomedics Super Speciality", area:"Kanpur Rd", specialties:["cardiac","trauma","respiratory","general"], icu:0, ot:0, specialist:null, dist:9.5, eta:19, rating:4.5, tier:"high", cost:"₹₹₹ Premium super-speciality"}
 ];
 
+/* ---------- API calls ---------- */
+async function fetchHospitalMatches(payload){
+  try{
+    const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 30000);
+    const res = await fetch(`${API_BASE}/api/search`, {method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload), signal:ctrl.signal});
+    clearTimeout(t);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    data.source = data.plan?.source || "gemini";
+    return data;
+  }catch(e){
+    console.warn("[CareFirst] live hospital search failed:", e);
+    return {
+      source:"unavailable", primary_label:"Live search unavailable", understood:[],
+      summary:"Live hospital matches could not be fetched. Check the API and database connection, then try again. For a life-threatening emergency, call 108.",
+      results:[], plan:{source:"unavailable"}, error:e.message
+    };
+  }
+}
+async function requestAmbulanceDispatch(hospitalName, eta){
+  return {driver:"Ramesh K.", vehicle:"UP32 AB 4471", eta};   // TODO: POST ${API_BASE}/api/transport/request
+}
+
+/* ---------- API panel ---------- */
+document.getElementById('apiEndpoint').value = API_BASE;
+function saveApiEndpoint(){
+  API_BASE = (document.getElementById('apiEndpoint').value.trim() || DEFAULT_API_BASE).replace(/\/+$/,'');
+  try{ localStorage.setItem('CareFirst_api', API_BASE); }catch(e){}
+  checkBackend(); loadNetwork();
+}
+async function checkBackend(){
+  const el = document.getElementById('apiStatus');
+  el.textContent = `Checking ${API_BASE} …`;
+  try{
+    const r = await fetch(`${API_BASE}/api/health`); const h = await r.json();
+    el.textContent = `Connected · Database (${h.db_type}) ${h.database?'✓':'✗'} · Gemini ${h.gemini?'✓ '+h.model:'✗ (keyword mode)'}`;
+  }catch(e){ el.textContent = `Backend not reachable at ${API_BASE} — using offline demo data`; }
+}
+
+/* ---------- tier chips ---------- */
 let selectedTier = "any";
 document.querySelectorAll('.tier-chip').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.tier-chip').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    selectedTier = b.dataset.tier;
+    b.classList.add('active'); selectedTier = b.dataset.tier;
   });
 });
 
-let apiEndpointUrl = "";
-function saveApiEndpoint(){
-  apiEndpointUrl = document.getElementById('apiEndpoint').value.trim();
-  document.getElementById('apiStatus').textContent = apiEndpointUrl
-    ? `Will try: ${apiEndpointUrl} (falls back to demo data if unreachable)`
-    : "Using built-in demo dataset";
-}
-
-// Placeholder for a real backend call: POST /api/hospitals/match
-// If apiEndpointUrl is set (and this page is self-hosted, not inside Claude's
-// preview sandbox), this tries the live API first and falls back to the local
-// demo engine on any failure — so the UI never breaks even if the backend is down.
-async function fetchHospitalMatches(payload){
-  if(apiEndpointUrl){
-    try{
-      const res = await fetch(apiEndpointUrl, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      if(res.ok) return await res.json();
-    }catch(e){ /* silently fall back to demo dataset below */ }
-  }
-  const pool = payload.tier && payload.tier!=="any" ? HOSPITALS.filter(h=>h.tier===payload.tier) : HOSPITALS;
-  const base = pool.length ? pool : HOSPITALS;
-  return base.map(h=>{
-    let score = h.specialties.includes(payload.dept) ? 60 : 20;
-    score += Math.max(0, 15 - h.dist);
-    score += h.icu>0 ? 10 : 0;
-    score += h.ot>0 ? 10 : 0;
-    if(payload.urgency==='critical') score += (10-h.dist)*0.8;
-    const readiness = Math.min(98, Math.round(40 + h.icu*4 + h.ot*8 + (h.specialist?10:0)));
-    return {...h, score: Math.round(score), readiness};
-  }).sort((a,b)=>b.score-a.score).slice(0,4);
-}
-// Placeholder for a real backend call: POST /api/transport/request
-async function requestAmbulanceDispatch(hospitalName, eta){
-  return {driver:"Ramesh K.", vehicle:"UP32 AB 4471", eta};
-}
-
+/* ---------- symptom chips + Enter to search ---------- */
 const chipDefs = ["Chest pain","Accident / injury","Stroke symptoms","Breathing difficulty","High fever","Pregnancy emergency"];
 const chipsEl = document.getElementById('chips');
 chipDefs.forEach(c=>{
   const b=document.createElement('button');
   b.className='chip'; b.type='button'; b.textContent=c;
   b.onclick=()=>{ document.getElementById('symptom').value=c;
-    [...chipsEl.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
+    [...chipsEl.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); analyze(); };
   chipsEl.appendChild(b);
 });
+document.getElementById('symptom').addEventListener('keydown', e=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); analyze(); }   // Enter = search, Shift+Enter = new line
+});
 
-document.getElementById('netGrid').innerHTML = HOSPITALS.map((h,i)=>`
+/* ---------- network list ---------- */
+function renderNetwork(list){
+  document.getElementById('netGrid').innerHTML = list.map((h,i)=>`
   <div class="net-row">
     <div class="idx">${String(i+1).padStart(2,'0')}</div>
-    <div class="info"><h4>${h.name}</h4><div class="area">${h.area} · ${h.cost}</div>
-      <div class="net-tags"><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span>${h.specialties.map(s=>`<span>${DEPTS[s].label.split(' / ')[0].split(' & ')[0]}</span>`).join('')}</div></div>
-    <div class="figs"><b>★ ${h.rating}</b>${h.dist} km · ${h.icu>0? h.icu+' ICU':'ICU full'}</div>
+    <div class="info"><h4>${esc(h.name)}</h4><div class="area">${esc(h.area)} · ${esc(h.cost||'')}</div>
+      <div class="net-tags"><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span>${h.specialties.slice(0,5).map(s=>`<span>${esc(s.split(' / ')[0].split(' & ')[0])}</span>`).join('')}</div></div>
+    <div class="figs"><b>★ ${h.rating}</b>${h.dist!=null? h.dist+' km · ':''}${h.icu>0? h.icu+' ICU':'ICU full'}</div>
   </div>`).join('');
+  const s = document.querySelector('.stat b'); if(s) s.textContent = list.length;
+}
+async function loadNetwork(){
+  try{
+    const r = await fetch(`${API_BASE}/api/hospitals`); if(!r.ok) throw 0;
+    renderNetwork(await r.json());
+  }catch(e){
+    renderNetwork(DEMO_HOSPITALS.map(h=>({...h, specialties:h.specialties.map(s=>DEPTS[s].label)})));
+  }
+}
+
+function esc(s){ return String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function toggleAlerts(){ document.getElementById('alertPanel').classList.toggle('show'); }
 document.addEventListener('click', e=>{
   if(!e.target.closest('.bell-wrap')) document.getElementById('alertPanel').classList.remove('show');
 });
 
-function detectDept(text){
-  for(const key in DEPTS){ if(DEPTS[key].pattern && DEPTS[key].pattern.test(text)) return key; }
-  return "general";
-}
-
+/* ---------- main flow: text -> backend (Gemini + MongoDB) -> render ---------- */
+let busy = false;
 async function analyze(){
   const text = document.getElementById('symptom').value.trim();
   if(!text){ document.getElementById('symptom').focus(); return; }
+  if(busy) return; busy = true;
+  const btn = document.querySelector('.findbtn'); const oldLabel = btn.textContent;
+  btn.textContent = 'AI is matching hospitals…'; btn.disabled = true;
+
   const urgency = document.getElementById('urgency').value;
   const area = document.getElementById('area').value;
-  const dept = detectDept(text);
-  const tier = selectedTier;
   const urgencyLabel = {critical:"Critical", urgent:"Urgent", soon:"Same-day"}[urgency];
   const now = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 
+  let data;
+  try{ data = await fetchHospitalMatches({query:text, area, urgency, tier:selectedTier}); }
+  finally{ busy = false; btn.textContent = oldLabel; btn.disabled = false; }
+  const ranked = data.results || [];
+
   document.getElementById('snapGrid').innerHTML = `
-    <div><b>${DEPTS[dept].label.split(' / ')[0]}</b><span>Likely condition</span></div>
+    <div><b>${esc(data.primary_label)}</b><span>Likely need</span></div>
     <div><b>${urgencyLabel}</b><span>Urgency</span></div>
-    <div><b>${area.split(',')[0]}</b><span>Location</span></div>
+    <div><b>${esc(area.split(',')[0])}</b><span>Location</span></div>
     <div><b>${now}</b><span>Logged at</span></div>`;
   document.getElementById('snapshot').classList.add('show','fade-in');
 
-  const ranked = await fetchHospitalMatches({dept, urgency, tier});
+  const srcLabel = {gemini:"Gemini AI + live database", keywords:"Keyword match + live database (Gemini off)", offline:"Offline demo data", unavailable:"Live API unavailable — no hospital matches shown"}[data.source] || data.source;
+  document.getElementById('copilotText').textContent = data.summary;
+  const planTrace = data.plan || {};
+  const inputTrace = {query:text, area, urgency, tier:selectedTier};
+  const scoreWeights = planTrace.severity === 'critical'
+    ? {specialty:45, distance:32, capacity:23} : {specialty:50, distance:25, capacity:25};
+  const scoreRows = ranked.map(h=>{
+    const parts = h.score_breakdown;
+    return parts ? `<div class="trace-score"><b>${esc(h.name)}</b><span>Specialty ${parts.specialty}/${scoreWeights.specialty}</span><span>Distance ${parts.distance}/${scoreWeights.distance}</span><span>Capacity ${parts.capacity}/${scoreWeights.capacity}</span></div>` : '';
+  }).join('');
+  const queryAgent = {gemini:'Gemini query understanding', keywords:'Keyword fallback (Gemini unavailable)', offline:'Offline demo matcher', unavailable:'Not run — live API unavailable'}[data.source] || data.source || 'Unknown';
+  const recommendationAgent = {gemini:'Gemini recommendation', template:'Backend template fallback', no_results:'No-results fallback'}[data.recommendation_source] || (data.source === 'offline' ? 'Offline demo template' : data.source === 'unavailable' ? 'Not run — live API unavailable' : 'Not reported');
+  const scoreFormula = `Final score = specialty fit × ${scoreWeights.specialty} + distance fit × ${scoreWeights.distance} + capacity fit × ${scoreWeights.capacity}. Critical cases use 45/32/23; other cases use 50/25/25. Hospitals are sorted by score, then distance.`;
+  document.getElementById('traceBody').innerHTML = `
+    <div class="trace-section"><h4>1 · Input sent to search</h4><pre class="trace-code">${esc(JSON.stringify(inputTrace,null,2))}</pre></div>
+    <div class="trace-section"><h4>2 · Query understanding · ${esc(queryAgent)}</h4><p>Structured plan used to retrieve hospitals:</p><pre class="trace-code">${esc(JSON.stringify(planTrace,null,2))}</pre></div>
+    <div class="trace-section"><h4>3 · SQL retrieval</h4><p>${esc(data.relaxed_note || 'Requirements were applied without relaxing the search.')}</p><pre class="trace-code">${esc(data.sql || (data.source === 'unavailable' ? data.error : 'SQL is not returned in offline demo mode.'))}</pre></div>
+    <div class="trace-section"><h4>4 · Hospital ranking</h4><p>${esc(scoreFormula)}</p><div class="trace-scores">${scoreRows || '<p>Per-factor score breakdown is available for live API results.</p>'}</div></div>
+    <div class="trace-section"><h4>5 · Recommendation · ${esc(recommendationAgent)}</h4><p>${esc(data.summary || 'No recommendation returned.')}</p></div>
+    <details class="trace-section"><summary>Raw search response JSON</summary><pre class="trace-code">${esc(JSON.stringify(data,null,2))}</pre></details>`;
   const top = ranked[0];
-  const maxScore = Math.max(...ranked.map(h=>h.score));
-
-  document.getElementById('copilotText').textContent =
-    `Based on the symptoms described, this looks like a ${DEPTS[dept].label.split(' / ')[0].toLowerCase()} case. `+
-    `${top.name} is the strongest match — closest hospital with a matching unit and open capacity. Please confirm with hospital staff before travel.`;
-  document.getElementById('evidence').innerHTML = `
-    <div><span>Specialty fit</span><span>${top.specialties.includes(dept)?'Matched unit':'No dedicated unit'}</span></div>
-    <div><span>Distance</span><span>${top.dist} km</span></div>
+  document.getElementById('evidence').innerHTML =
+    `<div><span>AI understood</span><span>${esc((data.understood||[]).join(' · '))}</span></div>` +
+    (top ? `
+    <div><span>Best match distance</span><span>${top.distance_km} km · ~${top.eta_min} min</span></div>
     <div><span>ICU capacity</span><span>${top.icu>0? top.icu+' beds open':'Full'}</span></div>
-    <div><span>OT availability</span><span>${top.ot>0? top.ot+' theatre(s) free':'None free'}</span></div>
-    <div><span>Data freshness</span><span>Synthetic, session-live</span></div>`;
+    <div><span>OT availability</span><span>${top.ot>0? top.ot+' theatre(s) free':'None free'}</span></div>` : '') +
+    (data.relaxed_note ? `<div><span>Note</span><span>${esc(data.relaxed_note)}</span></div>` : '') +
+    `<div><span>Source</span><span>${esc(srcLabel)}${data.took_ms? ' · '+data.took_ms+' ms':''}</span></div>`;
   document.getElementById('copilot').classList.add('show','fade-in');
 
-  document.getElementById('resultsTitle').innerHTML = `Best matches for you <span class="mono">· ${ranked.length} hospitals</span>`;
+  document.getElementById('resultsTitle').innerHTML = data.source === 'unavailable'
+    ? `Live hospital search unavailable <span class="mono">Check API connection</span>`
+    : ranked.length
+      ? `Best matches for you <span class="mono">· ${ranked.length} hospitals</span>`
+      : `No matching hospital found — please call <span class="mono">108</span> now`;
 
   document.getElementById('cmpBody').innerHTML = ranked.map(h=>`
     <tr>
-      <td><b>${h.name}</b></td>
+      <td><b>${esc(h.name)}</b></td>
       <td><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span></td>
-      <td>${h.dist} km</td>
+      <td>${h.distance_km} km</td>
       <td>${h.icu>0? h.icu : '<span class="badge-full">Full</span>'}</td>
-      <td>${h.specialist? '<span class="ok-dot">●</span> '+h.specialist : '<span class="no-dot">○</span> On request'}</td>
+      <td>${h.specialist? '<span class="ok-dot">●</span> '+esc(h.specialist) : '<span class="no-dot">○</span> On request'}</td>
       <td>${h.ot>0? '<span class="ok-dot">●</span> '+h.ot+' free' : '<span class="no-dot">○</span> None'}</td>
       <td><span class="ready-bar"><i style="width:${h.readiness}%"></i></span>${h.readiness}%</td>
     </tr>`).join('');
 
-  document.getElementById('cards').innerHTML = ranked.map(h=>{
-    const matchPct = Math.min(99, Math.round((h.score/maxScore)*97));
+  document.getElementById('cards').innerHTML = ranked.map((h,i)=>{
     const bedInfo = h.icu>0 ? `<b>${h.icu}</b> ICU beds open` : `<span class="badge-full">ICU full</span>`;
-    const reason = h.specialties.includes(dept)
-      ? `Has a dedicated <b>${DEPTS[dept].label}</b> unit, ${h.dist} km away, with ${h.ot>0? h.ot+' OT free':'no free OT'}.`
-      : `No specialised unit for this, but closest option with <b>${h.icu>0?'ICU capacity':'general emergency care'}</b>.`;
+    const phone = h.phone || '108';
     return `
     <div class="card fade-in">
-      <div class="card-top"><div><h4>${h.name}</h4><div class="meta" style="margin:4px 0 0"><span>${h.area}</span><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span></div></div><span class="match">${matchPct}% match</span></div>
-      <div class="meta"><span><b>${h.dist} km</b> away</span><span>${bedInfo}</span><span>Ambulance ETA <b>${h.eta} min</b></span><span>★ <b>${h.rating}</b></span></div>
-      <p class="why">${reason}</p>
+      <div class="card-top"><div><h4>${esc(h.name)}</h4><div class="meta" style="margin:4px 0 0"><span>${esc(h.area)}</span><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span></div></div><span class="match">${h.match_pct}% match</span></div>
+      <div class="meta"><span><b>${h.distance_km} km</b> away</span><span>${bedInfo}</span><span>Ambulance ETA <b>${h.eta_min} min</b></span><span>★ <b>${h.rating}</b></span></div>
+      <p class="why">${h.reason}</p>
       <div class="actions">
-        <button class="btn primary" onclick="callNumber('0522-100${Math.floor(Math.random()*900+100)}')">Call hospital</button>
-        <button class="btn danger" onclick="requestAmbulance('${h.name.replace(/'/g,"")}', ${h.eta}, ${h.dist})">Can't reach — send ambulance</button>
+        <button class="btn primary" onclick="callNumber('${esc(phone)}')">Call hospital</button>
+        <button class="btn danger" onclick="requestAmbulance(${i})">Can't reach — send ambulance</button>
       </div>
     </div>`;
   }).join('');
+  window.__ranked = ranked;
 
   document.getElementById('results').classList.add('show','fade-in');
-  drawMap(ranked, top);
-  document.getElementById('mapCard').classList.add('show','fade-in');
+  if(top){ drawMap(ranked, top); document.getElementById('mapCard').classList.add('show','fade-in'); }
   document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -687,8 +756,8 @@ function drawMap(hospitals, top){
     const isTop = h.name===top.name;
     els += `<line x1="${px}" y1="${py}" x2="${hx}" y2="${hy}" class="route-line" ${isTop?'':'opacity="0.25"'}/>`;
     els += `<circle cx="${hx}" cy="${hy}" r="${isTop?9:6}" fill="${isTop?'var(--teal)':'#9FB0B8'}"/>`;
-    els += `<text x="${hx}" y="${hy+ (hy>py?20:-14)}" font-size="10.5" fill="var(--ink)" font-family="IBM Plex Sans" text-anchor="middle">${h.name.split(' ')[0]}</text>`;
-    els += `<text x="${hx}" y="${hy+ (hy>py?32:-2)}" font-size="9.5" fill="var(--muted)" font-family="IBM Plex Mono" text-anchor="middle">${h.dist} km</text>`;
+    els += `<text x="${hx}" y="${hy+ (hy>py?20:-14)}" font-size="10.5" fill="var(--ink)" font-family="IBM Plex Sans" text-anchor="middle">${esc(h.name.split(' ')[0])}</text>`;
+    els += `<text x="${hx}" y="${hy+ (hy>py?32:-2)}" font-size="9.5" fill="var(--muted)" font-family="IBM Plex Mono" text-anchor="middle">${h.distance_km} km</text>`;
   });
   svg.innerHTML = els;
 }
@@ -696,7 +765,8 @@ function drawMap(hospitals, top){
 function callNumber(n){ window.location.href = 'tel:'+n; }
 
 let sheetTimers = [];
-async function requestAmbulance(hospital, eta, dist){
+async function requestAmbulance(idx){
+  const h = window.__ranked[idx]; const hospital = h.name, eta = h.eta_min;
   const info = await requestAmbulanceDispatch(hospital, eta);
   document.getElementById('sheetSub').textContent = `Heading to ${hospital} · Estimated arrival in ${info.eta} min`;
   document.getElementById('progressFill').style.width = '0%';
@@ -708,14 +778,12 @@ async function requestAmbulance(hospital, eta, dist){
   ];
   const stepsEl = document.getElementById('steps');
   stepsEl.innerHTML = steps.map((s,i)=>`
-    <div class="step" id="step${i}"><div class="dot">${i===0?'✓':i+1}</div><div><p>${s.label}</p><small>${s.time}</small></div></div>`).join('');
+    <div class="step" id="step${i}"><div class="dot">${i===0?'✓':i+1}</div><div><p>${esc(s.label)}</p><small>${s.time}</small></div></div>`).join('');
   document.getElementById('step0').classList.add('done');
   document.getElementById('step1').classList.add('active');
   document.getElementById('overlay').classList.add('show');
   setTimeout(()=>{ document.getElementById('progressFill').style.width='100%'; }, 50);
-
-  sheetTimers.forEach(t=>clearTimeout(t));
-  sheetTimers = [];
+  sheetTimers.forEach(t=>clearTimeout(t)); sheetTimers = [];
   for(let i=1;i<steps.length;i++){
     sheetTimers.push(setTimeout(()=>{
       document.getElementById('step'+i).classList.remove('active');
@@ -726,6 +794,9 @@ async function requestAmbulance(hospital, eta, dist){
   }
 }
 function closeSheet(){ document.getElementById('overlay').classList.remove('show'); }
+
+checkBackend();
+loadNetwork();
 </script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+sqlalchemy>=2.0
+google-genai>=1.20
+python-dotenv>=1.0
+pydantic>=2.7
+
+# Sirf MS SQL Server ke liye (SQLite ke liye zaroorat nahi):
+# pyodbc>=5.1
