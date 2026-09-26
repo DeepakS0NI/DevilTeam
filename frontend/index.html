@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareShift AI — Emergency Hospital Network, Lucknow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F7F7; --surface:#FFFFFF; --ink:#0F1B2A; --muted:#5B6B72;
+    --teal:#0E7C7A; --teal-dark:#0A5F5D; --teal-soft:#E4F1F0; --teal-bright:#4FD1C8;
+    --red:#D64545; --red-soft:#FBE7E7; --amber:#B8791E; --amber-soft:#FBF0DC;
+    --line:#E1E8E8; --shadow: 0 1px 2px rgba(15,27,42,.06), 0 8px 24px rgba(15,27,42,.06);
+    --navy:#0E1E2B; --navy-line:rgba(255,255,255,.12); --on-navy-muted:#9FB0B8;
+    --copilot:#2C6E6C;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1417; --surface:#141D21; --ink:#EAF1F1; --muted:#93A3A8;
+      --teal:#3FBDB9; --teal-dark:#2E9A96; --teal-soft:#132825; --teal-bright:#4FD1C8;
+      --red:#E9716B; --red-soft:#2A1717; --amber:#E3B45C; --amber-soft:#2A2213;
+      --line:#243035; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+      --navy:#070E13; --navy-line:rgba(255,255,255,.1); --on-navy-muted:#8CA0A8;
+    }
+  }
+  :root[data-theme="dark"]{
+      --bg:#0D1417; --surface:#141D21; --ink:#EAF1F1; --muted:#93A3A8;
+      --teal:#3FBDB9; --teal-dark:#2E9A96; --teal-soft:#132825; --teal-bright:#4FD1C8;
+      --red:#E9716B; --red-soft:#2A1717; --amber:#E3B45C; --amber-soft:#2A2213;
+      --line:#243035; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+      --navy:#070E13; --navy-line:rgba(255,255,255,.1); --on-navy-muted:#8CA0A8;
+  }
+  html{scroll-padding-top:70px;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  h1,h2,h3,h4{font-family:"Sora",system-ui,-apple-system,sans-serif;margin:0;letter-spacing:-0.01em;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 20px;}
+  section{padding:64px 0;}
+  @media (max-width:640px){section{padding:44px 0;}}
+  .eyebrow{color:var(--teal-dark);font-size:13px;font-weight:600;margin-bottom:8px;}
+  .sec-head{max-width:60ch;margin-bottom:34px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .sec-head h2{font-size:clamp(22px,3vw,30px);line-height:1.2;}
+  .sec-head p{color:var(--muted);font-size:15.5px;margin-top:10px;line-height:1.55;}
+  .icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .badge-demo{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-family:"IBM Plex Mono";
+    background:var(--amber-soft);color:var(--amber);padding:5px 11px;border-radius:100px;white-space:nowrap;}
+  .fade-in{animation:fadeIn .45s ease both;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){.fade-in{animation:none;}}
+
+  /* header */
+  header{position:sticky;top:0;z-index:40;background:var(--bg);
+    padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:14px;
+    border-bottom:1px solid var(--line);}
+  .headrow{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;}
+  .brand .mark{width:34px;height:34px;border-radius:9px;background:var(--teal);
+    display:flex;align-items:center;justify-content:center;color:#fff;flex:none;}
+  .brand .mark svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
+  .brand h1{font-size:19px;color:var(--ink);}
+  .brand span{display:block;font-size:11px;color:var(--muted);margin-top:1px;font-weight:500;}
+  nav{display:flex;gap:24px;align-items:center;}
+  nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;}
+  nav a:hover{color:var(--ink);}
+  @media (max-width:940px){nav{display:none;}}
+  .head-right{display:flex;align-items:center;gap:10px;}
+  .bell-wrap{position:relative;}
+  .bell{width:38px;height:38px;border-radius:100px;border:1px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);position:relative;}
+  .bell .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;background:var(--red);border-radius:100px;}
+  .alert-panel{display:none;position:absolute;right:0;top:46px;width:300px;background:var(--surface);
+    border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:41;}
+  .alert-panel.show{display:block;}
+  .alert-panel h5{font-size:12px;color:var(--muted);padding:10px 10px 6px;font-weight:600;}
+  .alert-item{display:flex;gap:10px;padding:10px;border-radius:8px;}
+  .alert-item:hover{background:var(--bg);}
+  .alert-item .a-dot{width:7px;height:7px;border-radius:100px;margin-top:6px;flex:none;}
+  .alert-item p{margin:0;font-size:13px;line-height:1.4;}
+  .alert-item small{color:var(--muted);font-size:11.5px;font-family:"IBM Plex Mono";}
+  .sos{display:flex;align-items:center;gap:8px;background:var(--red);color:#fff;border:none;
+    padding:10px 16px;border-radius:100px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;}
+  .sos:hover{background:#B93838;}
+
+  /* hero */
+  .hero-band{background:var(--navy);color:#fff;padding:56px 0 0;overflow:hidden;}
+  .hero-top{display:flex;flex-wrap:wrap;gap:40px;align-items:center;}
+  .hero-copy{flex:1 1 380px;min-width:280px;}
+  .hero-copy .eyebrow{color:var(--teal-bright);}
+  .hero-copy h2{font-size:clamp(28px,4.2vw,44px);line-height:1.1;max-width:15ch;font-weight:700;color:#fff;}
+  .hero-copy p{color:var(--on-navy-muted);font-size:16px;max-width:48ch;margin:14px 0 20px;line-height:1.6;}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+  .hb{font-size:11.5px;font-family:"IBM Plex Mono";border:1px solid var(--navy-line);color:var(--on-navy-muted);
+    padding:5px 11px;border-radius:100px;}
+  .hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--teal-bright);color:#062725;
+    border:none;padding:13px 22px;border-radius:100px;font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;}
+  .hero-cta:hover{background:#6FE0D7;}
+  .pulse-wrap{flex:1 1 320px;min-width:260px;}
+  .pulse-wrap svg{width:100%;height:auto;display:block;}
+  .pulse-line{stroke:var(--teal-bright);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:600;stroke-dashoffset:600;animation:draw 2.2s ease-out .3s forwards;}
+  @media (prefers-reduced-motion: reduce){.pulse-line{animation:none;stroke-dashoffset:0;}}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .stat-strip{display:flex;flex-wrap:wrap;margin-top:38px;border-top:1px solid var(--navy-line);}
+  .stat{flex:1 1 150px;padding:20px 20px 20px 0;border-right:1px solid var(--navy-line);}
+  .stat:last-child{border-right:none;}
+  .stat b{display:block;font-family:"Sora";font-size:24px;color:#fff;}
+  .stat span{color:var(--on-navy-muted);font-size:12.5px;}
+  @media (max-width:700px){.stat{flex:1 1 45%;border-right:none;border-bottom:1px solid var(--navy-line);}}
+
+  .tool-section{padding-top:0;}
+  .search-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:24px;box-shadow:var(--shadow);margin-top:-36px;position:relative;z-index:2;}
+  .toolhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .search-card .tool-label{font-size:12px;letter-spacing:.02em;color:var(--teal-dark);font-weight:600;}
+  .field-label{font-size:12.5px;color:var(--muted);margin-bottom:6px;display:block;}
+  textarea{width:100%;resize:vertical;min-height:74px;border:1px solid var(--line);
+    border-radius:10px;padding:12px 14px;font-family:inherit;font-size:15px;
+    background:var(--bg);color:var(--ink);transition:border-color .15s;}
+  textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    padding:7px 13px;border-radius:100px;font-size:13.5px;cursor:pointer;transition:.15s;}
+  .chip.active{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-dark);font-weight:600;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+  select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;
+    font-family:inherit;font-size:14.5px;background:var(--bg);color:var(--ink);}
+  .findbtn{margin-top:16px;width:100%;background:var(--teal);color:#fff;border:none;
+    padding:14px;border-radius:10px;font-size:15.5px;font-weight:600;cursor:pointer;transition:background .15s;}
+  .findbtn:hover{background:var(--teal-dark);}
+  @media (max-width:640px){.row2{grid-template-columns:1fr;}}
+  .tier-chip[data-tier="low"].active{background:var(--teal-soft);border-color:var(--teal);color:var(--teal-dark);}
+  .tier-chip[data-tier="medium"].active{background:var(--amber-soft);border-color:var(--amber);color:var(--amber);}
+  .tier-chip[data-tier="high"].active{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .tier-tag{font-size:11px;font-family:"IBM Plex Mono";padding:2px 8px;border-radius:100px;display:inline-block;}
+  .tier-tag.low{background:var(--teal-soft);color:var(--teal-dark);}
+  .tier-tag.medium{background:var(--amber-soft);color:var(--amber);}
+  .tier-tag.high{background:var(--navy);color:#fff;}
+  .api-panel{margin-top:14px;border:1px solid var(--line);border-radius:10px;padding:0 14px;}
+  .api-panel summary{cursor:pointer;padding:12px 0;font-size:13.5px;font-weight:500;color:var(--teal-dark);}
+  .api-panel p{font-size:12.5px;color:var(--muted);line-height:1.5;margin:0 0 10px;}
+  .api-panel input{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;
+    font-family:"IBM Plex Mono";font-size:12.5px;background:var(--bg);color:var(--ink);margin-bottom:8px;}
+  .api-status{display:block;font-size:11.5px;color:var(--muted);margin:8px 0 14px;font-family:"IBM Plex Mono";}
+
+  /* patient snapshot */
+  .snapshot{display:none;margin-top:22px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--bg);}
+  .snapshot.show{display:block;}
+  .snapshot h3{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:12px;}
+  .snap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media (max-width:640px){.snap-grid{grid-template-columns:repeat(2,1fr);}}
+  .snap-grid div b{display:block;font-family:"IBM Plex Mono";font-size:14px;}
+  .snap-grid div span{display:block;font-size:11px;color:var(--muted);margin-top:2px;}
+
+  /* copilot */
+  .copilot{display:none;margin-top:16px;border-radius:14px;padding:16px 18px;
+    background:linear-gradient(180deg,var(--teal-soft),var(--surface));border:1px solid var(--teal);}
+  .copilot.show{display:block;}
+  .copilot-head{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+  .copilot-head .av{width:24px;height:24px;border-radius:100px;background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:12px;flex:none;}
+  .copilot-head b{font-size:13px;}
+  .copilot p{font-size:14px;line-height:1.55;margin:0 0 12px;color:var(--ink);}
+  .evidence{display:flex;flex-direction:column;gap:6px;}
+  .evidence div{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 10px;
+    background:var(--surface);border-radius:8px;border:1px solid var(--line);}
+  .evidence div span:last-child{font-family:"IBM Plex Mono";color:var(--teal-dark);}
+
+  .results{margin-top:26px;display:none;}
+  .results.show{display:block;}
+  .results h3{font-size:15px;margin-bottom:14px;}
+
+  /* comparison table */
+  .cmp-scroll{overflow-x:auto;margin-bottom:26px;border:1px solid var(--line);border-radius:14px;}
+  table.cmp{width:100%;border-collapse:collapse;min-width:640px;background:var(--surface);}
+  table.cmp th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:600;padding:12px 14px;
+    border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.cmp td{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle;}
+  table.cmp tr:last-child td{border-bottom:none;}
+  table.cmp td b{font-family:"IBM Plex Mono";}
+  .ready-bar{width:70px;height:6px;background:var(--line);border-radius:100px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px;}
+  .ready-bar i{display:block;height:100%;background:var(--teal);border-radius:100px;transition:width .6s ease;}
+  .ok-dot{color:var(--teal-dark);} .no-dot{color:var(--muted);}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:18px;margin-bottom:12px;box-shadow:var(--shadow);transition:box-shadow .15s;}
+  .card:hover{box-shadow:0 2px 4px rgba(15,27,42,.08), 0 12px 28px rgba(15,27,42,.09);}
+  .card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+  .card-top h4{font-size:16.5px;}
+  .match{font-family:"IBM Plex Mono";font-size:12px;background:var(--teal-soft);color:var(--teal-dark);
+    padding:4px 9px;border-radius:100px;white-space:nowrap;font-weight:500;}
+  .meta{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 8px;font-size:13px;color:var(--muted);}
+  .meta b{color:var(--ink);font-family:"IBM Plex Mono";font-weight:500;}
+  .why{font-size:13.5px;color:var(--muted);margin:8px 0 14px;line-height:1.5;}
+  .why b{color:var(--ink);}
+  .actions{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 14px;
+    border-radius:8px;font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .btn.primary:hover{background:var(--teal-dark);}
+  .btn.danger{background:var(--red-soft);border-color:var(--red);color:var(--red);}
+  .badge-full{font-size:11.5px;background:var(--amber-soft);color:var(--amber);padding:2px 8px;
+    border-radius:100px;font-family:"IBM Plex Mono";}
+
+  /* transfer map */
+  .map-card{display:none;margin-top:26px;border:1px solid var(--line);border-radius:14px;
+    padding:20px;background:var(--surface);box-shadow:var(--shadow);}
+  .map-card.show{display:block;}
+  .map-card h3{font-size:14px;margin-bottom:14px;}
+  .map-svg{width:100%;height:auto;background:var(--bg);border-radius:10px;}
+  .route-line{stroke:var(--teal);stroke-width:2;stroke-dasharray:6 6;fill:none;}
+  .amb-dot{transition:transform 1.6s linear;}
+
+  /* how it works */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+  @media (max-width:760px){.steps3{grid-template-columns:1fr;}}
+  .step-card{padding:26px 24px 26px 0;border-right:1px solid var(--line);}
+  .step-card:last-child{border-right:none;}
+  @media (max-width:760px){.step-card{border-right:none;border-bottom:1px solid var(--line);padding:22px 0;}
+    .step-card:last-child{border-bottom:none;}}
+  .step-num{font-family:"IBM Plex Mono";font-size:13px;color:var(--teal-dark);margin-bottom:10px;}
+  .step-card h4{font-size:17px;margin-bottom:8px;}
+  .step-card p{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0;}
+
+  .net-list{border-top:1px solid var(--line);}
+  .net-row{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid var(--line);transition:background .15s;}
+  .net-row:hover{background:var(--bg);}
+  .net-row .idx{font-family:"IBM Plex Mono";color:var(--muted);font-size:13px;width:26px;flex:none;}
+  .net-row .info{flex:1 1 auto;min-width:0;}
+  .net-row h4{font-size:15.5px;}
+  .net-row .area{color:var(--muted);font-size:13px;margin-top:2px;}
+  .net-row .net-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .net-tags span{font-size:11.5px;background:var(--teal-soft);color:var(--teal-dark);padding:3px 9px;border-radius:100px;}
+  .net-row .figs{flex:none;text-align:right;font-family:"IBM Plex Mono";font-size:13px;color:var(--muted);}
+  .net-row .figs b{display:block;color:var(--ink);font-size:14px;}
+  @media (max-width:640px){.net-row{flex-wrap:wrap;} .net-row .figs{text-align:left;margin-left:44px;}}
+
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media (max-width:900px){.trust-grid{grid-template-columns:repeat(2,1fr);}}
+  .trust-item .ic{width:38px;height:38px;border-radius:10px;background:var(--teal-soft);color:var(--teal-dark);
+    display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+  .trust-item h4{font-size:14.5px;margin-bottom:5px;}
+  .trust-item p{color:var(--muted);font-size:13px;margin:0;line-height:1.5;}
+
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+  @media (max-width:900px){.rev-grid{grid-template-columns:1fr;}}
+  .rev-card{padding:8px 24px 8px 0;border-right:1px solid var(--line);}
+  .rev-card:last-child{border-right:none;}
+  @media (max-width:900px){.rev-card{border-right:none;border-bottom:1px solid var(--line);padding:20px 0;}
+    .rev-card:last-child{border-bottom:none;}}
+  .quote-mark{font-family:"Sora";font-size:40px;color:var(--teal);line-height:1;margin-bottom:6px;display:block;}
+  .rev-card p.quote{font-size:14.5px;line-height:1.6;margin:0 0 14px;color:var(--ink);}
+  .rev-who{font-size:13px;color:var(--muted);}
+  .rev-who b{color:var(--ink);font-weight:600;}
+
+  .about-wrap{display:flex;gap:40px;flex-wrap:wrap;}
+  .about-copy{flex:1 1 340px;min-width:280px;}
+  .about-copy p{color:var(--muted);font-size:15px;line-height:1.65;margin:0 0 14px;}
+  .about-list{flex:1 1 280px;min-width:260px;display:flex;flex-direction:column;gap:16px;}
+  .about-list-item{display:flex;gap:12px;}
+  .about-list-item .n{font-family:"IBM Plex Mono";color:var(--teal-dark);font-size:13px;flex:none;padding-top:2px;}
+  .about-list-item p{margin:0;font-size:14.5px;color:var(--ink);line-height:1.5;}
+  .about-list-item span{display:block;color:var(--muted);font-size:13px;margin-top:2px;}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 30px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:26px;margin-bottom:24px;}
+  @media (max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+  .foot-grid h5{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:12px;}
+  .foot-grid a, .foot-grid p{display:block;color:var(--ink);text-decoration:none;font-size:13.5px;margin-bottom:8px;line-height:1.5;}
+  .foot-grid a:hover{color:var(--teal-dark);}
+  .foot-api{font-size:12px;color:var(--muted);font-family:"IBM Plex Mono";border-top:1px solid var(--line);
+    padding-top:16px;margin-bottom:16px;}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:20px;display:flex;flex-wrap:wrap;
+    justify-content:space-between;gap:10px;color:var(--muted);font-size:12.5px;}
+
+  .overlay{position:fixed;inset:0;background:rgba(15,27,42,.5);display:none;align-items:flex-end;
+    justify-content:center;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px);}
+  .overlay.show{display:flex;}
+  @media (min-width:640px){.overlay{align-items:center;}}
+  .sheet{background:var(--surface);width:100%;max-width:520px;border-radius:18px 18px 0 0;
+    padding:22px;box-shadow:var(--shadow);max-height:88vh;overflow-y:auto;}
+  @media (min-width:640px){.sheet{border-radius:18px;}}
+  .sheet h3{font-size:18px;margin-bottom:4px;}
+  .sheet .sub{color:var(--muted);font-size:14px;margin-bottom:14px;}
+  .progress-track{height:6px;background:var(--line);border-radius:100px;overflow:hidden;margin-bottom:18px;}
+  .progress-fill{height:100%;background:var(--teal);border-radius:100px;width:0%;transition:width 1.6s linear;}
+  .step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .dot{width:22px;height:22px;border-radius:100px;border:2px solid var(--line);flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:.2s;}
+  .step.done .dot{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .step.active .dot{border-color:var(--teal);color:var(--teal);}
+  .step p{margin:0;font-size:14.5px;}
+  .step small{color:var(--muted);font-size:12.5px;font-family:"IBM Plex Mono";}
+  .closebtn{width:100%;margin-top:18px;padding:12px;border-radius:10px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);font-weight:500;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap headrow">
+    <a class="brand" href="#top">
+      <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18" stroke-linecap="round" stroke-width="2.5"/></svg></div>
+      <div><h1>CareShift AI</h1><span>Find care. Get there.</span></div>
+    </a>
+    <nav>
+      <a href="#tool">Find a hospital</a>
+      <a href="#how">How it works</a>
+      <a href="#network">Our network</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="head-right">
+      <div class="bell-wrap">
+        <button class="bell" onclick="toggleAlerts()" aria-label="Alerts"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg><span class="dot"></span></button>
+        <div class="alert-panel" id="alertPanel">
+          <h5>Live alerts · synthetic feed</h5>
+          <div class="alert-item"><div class="a-dot" style="background:var(--teal)"></div><div><p>ICU bed freed — Sahara Hospital, Gomti Nagar</p><small>2 min ago</small></div></div>
+          <div class="alert-item"><div class="a-dot" style="background:var(--amber)"></div><div><p>Ambulance UP32 AB 4471 back in service</p><small>6 min ago</small></div></div>
+          <div class="alert-item"><div class="a-dot" style="background:var(--muted)"></div><div><p>Demo dataset refreshed for this session</p><small>14 min ago</small></div></div>
+        </div>
+      </div>
+      <button class="sos" onclick="callNumber('108')">Call <span class="mono">108</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="hero-band">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="hero-copy">
+        <div class="eyebrow">Emergency match, in seconds</div>
+        <h2>Tell us what's wrong. We'll find who can treat it.</h2>
+        <p>CareShift AI matches your emergency to the nearest ready hospital — with the evidence behind every suggestion — and arranges an ambulance if you can't get there yourself.</p>
+        <div class="hero-badges">
+          <span class="hb">Synthetic demo data</span>
+          <span class="hb">Human approval required</span>
+          <span class="hb">PS-01 hackathon build</span>
+        </div>
+        <a class="hero-cta" href="#tool">Start emergency match ↓</a>
+      </div>
+      <div class="pulse-wrap" aria-hidden="true">
+        <svg viewBox="0 0 340 140">
+          <polyline class="pulse-line" points="0,80 60,80 82,26 106,132 128,54 148,80 340,80"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><b>6</b><span>partner hospitals in Lucknow</span></div>
+      <div class="stat"><b>24×7</b><span>monitored dispatch</span></div>
+      <div class="stat"><b>&lt;10 sec</b><span>average match time</span></div>
+      <div class="stat"><b>108</b><span>integrated ambulance line</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="top">
+  <section class="tool-section" id="tool">
+    <div class="search-card">
+      <div class="toolhead">
+        <div class="tool-label">EMERGENCY MATCH TOOL</div>
+        <span class="badge-demo">◐ synthetic data · human review required</span>
+      </div>
+      <label class="field-label" for="symptom">What's happening?</label>
+      <textarea id="symptom" placeholder="e.g. Chest pain and breathlessness since 20 minutes, father, 58 years old"></textarea>
+      <div class="chips" id="chips"></div>
+
+      <div class="row2">
+        <div>
+          <label class="field-label" for="area">Your area</label>
+          <select id="area">
+            <option>Hazratganj, Lucknow</option>
+            <option>Gomti Nagar, Lucknow</option>
+            <option>Aliganj, Lucknow</option>
+            <option>Alambagh, Lucknow</option>
+            <option>Indira Nagar, Lucknow</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="urgency">How urgent</label>
+          <select id="urgency">
+            <option value="critical">Critical — right now</option>
+            <option value="urgent">Urgent — within an hour</option>
+            <option value="soon">Needs care today</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="field-label" style="margin-top:14px">Which type of hospital do you want?</label>
+      <div class="chips" id="tierChips">
+        <button class="chip tier-chip active" data-tier="any" type="button">Any</button>
+        <button class="chip tier-chip" data-tier="low" type="button">Low cost (govt)</button>
+        <button class="chip tier-chip" data-tier="medium" type="button">Medium (private)</button>
+        <button class="chip tier-chip" data-tier="high" type="button">High (premium)</button>
+      </div>
+
+      <button class="findbtn" onclick="analyze()">Find hospitals near me</button>
+
+      <details class="api-panel">
+        <summary>⚙ Connect a live API (optional)</summary>
+        <p>Paste your backend's match endpoint (e.g. an ASP.NET Core route like <span class="mono">https://yourapi.com/api/hospitals/match</span>). This only works once this page is hosted on your own server — Claude's preview sandbox blocks calls to outside APIs, so here it will safely fall back to the built-in demo dataset.</p>
+        <input type="text" id="apiEndpoint" placeholder="https://your-api.com/api/hospitals/match">
+        <button type="button" class="btn" onclick="saveApiEndpoint()">Save endpoint</button>
+        <span class="api-status" id="apiStatus">Using built-in demo dataset</span>
+      </details>
+
+      <div class="snapshot" id="snapshot">
+        <h3>PATIENT EMERGENCY SNAPSHOT</h3>
+        <div class="snap-grid" id="snapGrid"></div>
+      </div>
+
+      <div class="copilot" id="copilot">
+        <div class="copilot-head"><div class="av">AI</div><b>CareShift Copilot</b></div>
+        <p id="copilotText"></p>
+        <div class="evidence" id="evidence"></div>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <h3 id="resultsTitle"></h3>
+      <div class="cmp-scroll">
+        <table class="cmp">
+          <thead><tr><th>Hospital</th><th>Tier</th><th>Distance</th><th>ICU beds</th><th>Specialist on call</th><th>OT available</th><th>Readiness</th></tr></thead>
+          <tbody id="cmpBody"></tbody>
+        </table>
+      </div>
+      <div id="cards"></div>
+    </div>
+
+    <div class="map-card" id="mapCard">
+      <h3>Transfer route — schematic, not to scale</h3>
+      <svg class="map-svg" id="mapSvg" viewBox="0 0 600 220"></svg>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="sec-head"><div><div class="eyebrow">How it works</div><h2>From symptom to treatment, in three steps</h2><p>No forms, no phone trees. CareShift AI does the matching so you can focus on getting help.</p></div></div>
+    <div class="steps3">
+      <div class="step-card"><div class="step-num">01</div><h4>Describe what's happening</h4><p>Type the symptom in your own words, or pick a common emergency. No medical jargon needed.</p></div>
+      <div class="step-card"><div class="step-num">02</div><h4>See ranked, compared hospitals</h4><p>CareShift AI compares nearby hospitals on specialty fit, ICU beds, OT and specialist availability — reasoning shown, not hidden.</p></div>
+      <div class="step-card"><div class="step-num">03</div><h4>Get there, or let us send help</h4><p>Call the hospital directly, or request an ambulance — live dispatch status and route shown until arrival.</p></div>
+    </div>
+  </section>
+
+  <section id="network">
+    <div class="sec-head"><div><div class="eyebrow">Our network</div><h2>Partner hospitals across Lucknow</h2><p>Every hospital in the CareShift network is verified for emergency capacity before it's added.</p></div></div>
+    <div class="net-list" id="netGrid"></div>
+  </section>
+
+  <section id="trust">
+    <div class="sec-head"><div><div class="eyebrow">Trust & safety</div><h2>Built with clinicians, not around them</h2><p>CareShift AI suggests — it never decides. A human always makes the final call, and every figure here is synthetic demo data.</p></div></div>
+    <div class="trust-grid">
+      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><h4>Verified network</h4><p>Every partner hospital's emergency capacity is confirmed and re-checked regularly.</p></div>
+      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/></svg></div><h4>Human-in-the-loop</h4><p>Clinicians review every match. CareShift AI never makes an autonomous treatment decision.</p></div>
+      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/></svg></div><h4>Evidence shown</h4><p>Every suggestion comes with the reasoning behind it — distance, specialty fit, OT and bed status.</p></div>
+      <div class="trust-item"><div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h4>Privacy first</h4><p>Your details are used only to route your request and are never sold or advertised against.</p></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="sec-head"><div><div class="eyebrow">Reviews</div><h2>What families have said</h2></div></div>
+    <div class="rev-grid">
+      <div class="rev-card"><span class="quote-mark">"</span><p class="quote">We didn't know which hospital had a stroke unit free at 2am. CareShift pointed us to the right one in under a minute.</p><div class="rev-who"><b>Anita R.</b> · Gomti Nagar</div></div>
+      <div class="rev-card"><span class="quote-mark">"</span><p class="quote">Our car wouldn't start during a cardiac emergency. The ambulance request kept us updated the whole way — it stayed calm when we couldn't.</p><div class="rev-who"><b>Suresh P.</b> · Alambagh</div></div>
+      <div class="rev-card"><span class="quote-mark">"</span><p class="quote">Simple to use even when panicking. Would like more hospitals added outside Lucknow city.</p><div class="rev-who"><b>Fatima K.</b> · Aliganj</div></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-head"><div><div class="eyebrow">About CareShift AI</div><h2>Why we built this</h2></div></div>
+    <div class="about-wrap">
+      <div class="about-copy">
+        <p>Emergency teams and families face the same problem from different sides: information about who can treat what, and where beds and OTs are free, is scattered across sheets, dashboards and phone calls — precisely when there's no time to search.</p>
+        <p>CareShift AI started as a hackathon project (PS-01) focused on hospital monitoring search, and grew into a patient-facing tool with the same principle: turn a plain description of an emergency into a safe, evidence-backed match — fast enough to matter.</p>
+      </div>
+      <div class="about-list">
+        <div class="about-list-item"><div class="n">01</div><div><p>Built with real hospital operations patterns</p><span>Grounded in actual capacity and specialty structure, on synthetic demo records.</span></div></div>
+        <div class="about-list-item"><div class="n">02</div><div><p>Designed for the worst moment, not the best</p><span>Large tap targets, short steps, works under stress.</span></div></div>
+        <div class="about-list-item"><div class="n">03</div><div><p>Transparent by default</p><span>Every match shows its reasoning and evidence — never a black box.</span></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h5>CareShift AI</h5><p style="color:var(--muted)">Emergency hospital matching and transport for Lucknow, built on the CareShift AI (PS-01) hospital-operations platform.</p></div>
+      <div><h5>Product</h5><a href="#tool">Find a hospital</a><a href="#how">How it works</a><a href="#network">Our network</a></div>
+      <div><h5>Company</h5><a href="#about">About</a><a href="#reviews">Reviews</a><a href="#">For hospitals</a></div>
+      <div><h5>Emergency numbers</h5><p><b class="mono">108</b> — Ambulance</p><p><b class="mono">100</b> — Police</p><p><b class="mono">101</b> — Fire</p></div>
+    </div>
+    <div class="foot-api">Backend-ready: this UI calls fetchHospitalMatches() / requestAmbulanceDispatch() — swap the mock bodies for ASP.NET Core Web API endpoints (/api/hospitals/match, /api/transport/request) without touching this markup.</div>
+    <div class="foot-bottom"><span>© 2026 CareShift AI · PS-01 · Lucknow, India</span><span>Demo prototype — in a real emergency, always call 108 directly.</span></div>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h3>Ambulance requested</h3>
+    <p class="sub" id="sheetSub"></p>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div id="steps"></div>
+    <button class="closebtn" onclick="closeSheet()">Close</button>
+  </div>
+</div>
+
+<script>
+/* ---- Mock data layer (kept separate so it can be swapped for real API calls) ---- */
+/* Natural-language department detection via regex — word-boundary patterns so
+   "heartburn" doesn't false-match "heart", etc. Real deployments would replace
+   detectDept() with a call to an actual NLP/LLM endpoint; this regex layer is
+   the fully-working, no-backend-needed version for the demo. */
+const DEPTS = {
+  cardiac: {label:"Cardiology / Cardiac emergency", pattern:/\b(chest\s*pain|heart\s*attack|cardiac|palpitations?|high\s*bp|blood\s*pressure|angina)\b/i},
+  trauma: {label:"Trauma & orthopaedics", pattern:/\b(accident|fracture[d]?|bleed(ing)?|injur(y|ed)|fell|fall(en)?|burns?|road\s*accident|trauma)\b/i},
+  neuro: {label:"Neurology / Stroke unit", pattern:/\b(stroke|paraly(sis|zed)|seizures?|unconscious|fits?|numbness|slurred\s*speech)\b/i},
+  respiratory: {label:"Pulmonology / ICU", pattern:/\b(breathless(ness)?|can'?t\s*breathe|asthma|oxygen|choking|lungs?)\b/i},
+  maternity: {label:"Obstetrics / Maternity", pattern:/\b(pregnan(t|cy)|labou?r|deliver(y|ing)|contractions?)\b/i},
+  general: {label:"General emergency", pattern:null}
+};
+
+const TIER_LABEL = {low:"Low cost · govt", medium:"Medium · private", high:"High · premium"};
+const HOSPITALS = [
+  {name:"SGPGI Emergency & Trauma Centre", area:"Raebareli Rd", specialties:["cardiac","neuro","trauma","respiratory"], icu:6, ot:2, specialist:"Dr. Mehra (Cardio)", dist:6.4, eta:14, rating:4.6, tier:"low", cost:"₹ Subsidised govt rates"},
+  {name:"KGMU Trauma Centre", area:"Chowk", specialties:["trauma","neuro","general"], icu:3, ot:1, specialist:"Dr. Rawat (Neuro)", dist:5.1, eta:12, rating:4.3, tier:"low", cost:"₹ Subsidised govt rates"},
+  {name:"RMLIMS Emergency", area:"Vibhuti Khand", specialties:["general","maternity","trauma"], icu:4, ot:1, specialist:"Dr. Verma (General)", dist:4.0, eta:10, rating:4.1, tier:"low", cost:"₹ Subsidised govt rates"},
+  {name:"Sahara Hospital", area:"Gomti Nagar", specialties:["cardiac","general","maternity"], icu:9, ot:3, specialist:"Dr. Singh (Cardio)", dist:3.2, eta:8, rating:4.4, tier:"medium", cost:"₹₹ Private, mid-range"},
+  {name:"Medanta Hospital", area:"Sushant Golf City", specialties:["cardiac","neuro","respiratory"], icu:5, ot:2, specialist:"Dr. Kapoor (Neuro)", dist:8.7, eta:17, rating:4.7, tier:"high", cost:"₹₹₹ Premium super-speciality"},
+  {name:"Apollomedics Super Speciality", area:"Kanpur Rd", specialties:["cardiac","trauma","respiratory","general"], icu:0, ot:0, specialist:null, dist:9.5, eta:19, rating:4.5, tier:"high", cost:"₹₹₹ Premium super-speciality"}
+];
+
+let selectedTier = "any";
+document.querySelectorAll('.tier-chip').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tier-chip').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    selectedTier = b.dataset.tier;
+  });
+});
+
+let apiEndpointUrl = "";
+function saveApiEndpoint(){
+  apiEndpointUrl = document.getElementById('apiEndpoint').value.trim();
+  document.getElementById('apiStatus').textContent = apiEndpointUrl
+    ? `Will try: ${apiEndpointUrl} (falls back to demo data if unreachable)`
+    : "Using built-in demo dataset";
+}
+
+// Placeholder for a real backend call: POST /api/hospitals/match
+// If apiEndpointUrl is set (and this page is self-hosted, not inside Claude's
+// preview sandbox), this tries the live API first and falls back to the local
+// demo engine on any failure — so the UI never breaks even if the backend is down.
+async function fetchHospitalMatches(payload){
+  if(apiEndpointUrl){
+    try{
+      const res = await fetch(apiEndpointUrl, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+      if(res.ok) return await res.json();
+    }catch(e){ /* silently fall back to demo dataset below */ }
+  }
+  const pool = payload.tier && payload.tier!=="any" ? HOSPITALS.filter(h=>h.tier===payload.tier) : HOSPITALS;
+  const base = pool.length ? pool : HOSPITALS;
+  return base.map(h=>{
+    let score = h.specialties.includes(payload.dept) ? 60 : 20;
+    score += Math.max(0, 15 - h.dist);
+    score += h.icu>0 ? 10 : 0;
+    score += h.ot>0 ? 10 : 0;
+    if(payload.urgency==='critical') score += (10-h.dist)*0.8;
+    const readiness = Math.min(98, Math.round(40 + h.icu*4 + h.ot*8 + (h.specialist?10:0)));
+    return {...h, score: Math.round(score), readiness};
+  }).sort((a,b)=>b.score-a.score).slice(0,4);
+}
+// Placeholder for a real backend call: POST /api/transport/request
+async function requestAmbulanceDispatch(hospitalName, eta){
+  return {driver:"Ramesh K.", vehicle:"UP32 AB 4471", eta};
+}
+
+const chipDefs = ["Chest pain","Accident / injury","Stroke symptoms","Breathing difficulty","High fever","Pregnancy emergency"];
+const chipsEl = document.getElementById('chips');
+chipDefs.forEach(c=>{
+  const b=document.createElement('button');
+  b.className='chip'; b.type='button'; b.textContent=c;
+  b.onclick=()=>{ document.getElementById('symptom').value=c;
+    [...chipsEl.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
+  chipsEl.appendChild(b);
+});
+
+document.getElementById('netGrid').innerHTML = HOSPITALS.map((h,i)=>`
+  <div class="net-row">
+    <div class="idx">${String(i+1).padStart(2,'0')}</div>
+    <div class="info"><h4>${h.name}</h4><div class="area">${h.area} · ${h.cost}</div>
+      <div class="net-tags"><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span>${h.specialties.map(s=>`<span>${DEPTS[s].label.split(' / ')[0].split(' & ')[0]}</span>`).join('')}</div></div>
+    <div class="figs"><b>★ ${h.rating}</b>${h.dist} km · ${h.icu>0? h.icu+' ICU':'ICU full'}</div>
+  </div>`).join('');
+
+function toggleAlerts(){ document.getElementById('alertPanel').classList.toggle('show'); }
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.bell-wrap')) document.getElementById('alertPanel').classList.remove('show');
+});
+
+function detectDept(text){
+  for(const key in DEPTS){ if(DEPTS[key].pattern && DEPTS[key].pattern.test(text)) return key; }
+  return "general";
+}
+
+async function analyze(){
+  const text = document.getElementById('symptom').value.trim();
+  if(!text){ document.getElementById('symptom').focus(); return; }
+  const urgency = document.getElementById('urgency').value;
+  const area = document.getElementById('area').value;
+  const dept = detectDept(text);
+  const tier = selectedTier;
+  const urgencyLabel = {critical:"Critical", urgent:"Urgent", soon:"Same-day"}[urgency];
+  const now = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  document.getElementById('snapGrid').innerHTML = `
+    <div><b>${DEPTS[dept].label.split(' / ')[0]}</b><span>Likely condition</span></div>
+    <div><b>${urgencyLabel}</b><span>Urgency</span></div>
+    <div><b>${area.split(',')[0]}</b><span>Location</span></div>
+    <div><b>${now}</b><span>Logged at</span></div>`;
+  document.getElementById('snapshot').classList.add('show','fade-in');
+
+  const ranked = await fetchHospitalMatches({dept, urgency, tier});
+  const top = ranked[0];
+  const maxScore = Math.max(...ranked.map(h=>h.score));
+
+  document.getElementById('copilotText').textContent =
+    `Based on the symptoms described, this looks like a ${DEPTS[dept].label.split(' / ')[0].toLowerCase()} case. `+
+    `${top.name} is the strongest match — closest hospital with a matching unit and open capacity. Please confirm with hospital staff before travel.`;
+  document.getElementById('evidence').innerHTML = `
+    <div><span>Specialty fit</span><span>${top.specialties.includes(dept)?'Matched unit':'No dedicated unit'}</span></div>
+    <div><span>Distance</span><span>${top.dist} km</span></div>
+    <div><span>ICU capacity</span><span>${top.icu>0? top.icu+' beds open':'Full'}</span></div>
+    <div><span>OT availability</span><span>${top.ot>0? top.ot+' theatre(s) free':'None free'}</span></div>
+    <div><span>Data freshness</span><span>Synthetic, session-live</span></div>`;
+  document.getElementById('copilot').classList.add('show','fade-in');
+
+  document.getElementById('resultsTitle').innerHTML = `Best matches for you <span class="mono">· ${ranked.length} hospitals</span>`;
+
+  document.getElementById('cmpBody').innerHTML = ranked.map(h=>`
+    <tr>
+      <td><b>${h.name}</b></td>
+      <td><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span></td>
+      <td>${h.dist} km</td>
+      <td>${h.icu>0? h.icu : '<span class="badge-full">Full</span>'}</td>
+      <td>${h.specialist? '<span class="ok-dot">●</span> '+h.specialist : '<span class="no-dot">○</span> On request'}</td>
+      <td>${h.ot>0? '<span class="ok-dot">●</span> '+h.ot+' free' : '<span class="no-dot">○</span> None'}</td>
+      <td><span class="ready-bar"><i style="width:${h.readiness}%"></i></span>${h.readiness}%</td>
+    </tr>`).join('');
+
+  document.getElementById('cards').innerHTML = ranked.map(h=>{
+    const matchPct = Math.min(99, Math.round((h.score/maxScore)*97));
+    const bedInfo = h.icu>0 ? `<b>${h.icu}</b> ICU beds open` : `<span class="badge-full">ICU full</span>`;
+    const reason = h.specialties.includes(dept)
+      ? `Has a dedicated <b>${DEPTS[dept].label}</b> unit, ${h.dist} km away, with ${h.ot>0? h.ot+' OT free':'no free OT'}.`
+      : `No specialised unit for this, but closest option with <b>${h.icu>0?'ICU capacity':'general emergency care'}</b>.`;
+    return `
+    <div class="card fade-in">
+      <div class="card-top"><div><h4>${h.name}</h4><div class="meta" style="margin:4px 0 0"><span>${h.area}</span><span class="tier-tag ${h.tier}">${TIER_LABEL[h.tier]}</span></div></div><span class="match">${matchPct}% match</span></div>
+      <div class="meta"><span><b>${h.dist} km</b> away</span><span>${bedInfo}</span><span>Ambulance ETA <b>${h.eta} min</b></span><span>★ <b>${h.rating}</b></span></div>
+      <p class="why">${reason}</p>
+      <div class="actions">
+        <button class="btn primary" onclick="callNumber('0522-100${Math.floor(Math.random()*900+100)}')">Call hospital</button>
+        <button class="btn danger" onclick="requestAmbulance('${h.name.replace(/'/g,"")}', ${h.eta}, ${h.dist})">Can't reach — send ambulance</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('results').classList.add('show','fade-in');
+  drawMap(ranked, top);
+  document.getElementById('mapCard').classList.add('show','fade-in');
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function drawMap(hospitals, top){
+  const svg = document.getElementById('mapSvg');
+  const px = 60, py = 110;
+  let els = `<circle cx="${px}" cy="${py}" r="7" fill="#D64545"/><text x="${px}" y="${py-14}" font-size="11" fill="var(--muted)" font-family="IBM Plex Mono">You</text>`;
+  hospitals.forEach((h,i)=>{
+    const hx = 180 + i*110, hy = 60 + (i%2)*90;
+    const isTop = h.name===top.name;
+    els += `<line x1="${px}" y1="${py}" x2="${hx}" y2="${hy}" class="route-line" ${isTop?'':'opacity="0.25"'}/>`;
+    els += `<circle cx="${hx}" cy="${hy}" r="${isTop?9:6}" fill="${isTop?'var(--teal)':'#9FB0B8'}"/>`;
+    els += `<text x="${hx}" y="${hy+ (hy>py?20:-14)}" font-size="10.5" fill="var(--ink)" font-family="IBM Plex Sans" text-anchor="middle">${h.name.split(' ')[0]}</text>`;
+    els += `<text x="${hx}" y="${hy+ (hy>py?32:-2)}" font-size="9.5" fill="var(--muted)" font-family="IBM Plex Mono" text-anchor="middle">${h.dist} km</text>`;
+  });
+  svg.innerHTML = els;
+}
+
+function callNumber(n){ window.location.href = 'tel:'+n; }
+
+let sheetTimers = [];
+async function requestAmbulance(hospital, eta, dist){
+  const info = await requestAmbulanceDispatch(hospital, eta);
+  document.getElementById('sheetSub').textContent = `Heading to ${hospital} · Estimated arrival in ${info.eta} min`;
+  document.getElementById('progressFill').style.width = '0%';
+  const steps = [
+    {label:"Request received", time:"now"},
+    {label:`Ambulance assigned — driver ${info.driver}, ${info.vehicle}`, time:"~1 min"},
+    {label:"On the way to your location", time:`~${Math.max(1,eta-6)} min`},
+    {label:`Arriving, then direct to ${hospital}`, time:`~${eta} min`}
+  ];
+  const stepsEl = document.getElementById('steps');
+  stepsEl.innerHTML = steps.map((s,i)=>`
+    <div class="step" id="step${i}"><div class="dot">${i===0?'✓':i+1}</div><div><p>${s.label}</p><small>${s.time}</small></div></div>`).join('');
+  document.getElementById('step0').classList.add('done');
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('overlay').classList.add('show');
+  setTimeout(()=>{ document.getElementById('progressFill').style.width='100%'; }, 50);
+
+  sheetTimers.forEach(t=>clearTimeout(t));
+  sheetTimers = [];
+  for(let i=1;i<steps.length;i++){
+    sheetTimers.push(setTimeout(()=>{
+      document.getElementById('step'+i).classList.remove('active');
+      document.getElementById('step'+i).classList.add('done');
+      document.getElementById('step'+i).querySelector('.dot').textContent='✓';
+      if(i+1<steps.length) document.getElementById('step'+(i+1)).classList.add('active');
+    }, i*1800));
+  }
+}
+function closeSheet(){ document.getElementById('overlay').classList.remove('show'); }
+</script>
+</body>
+</html>
